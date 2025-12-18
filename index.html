@@ -1,289 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<style>
-  /* --- CSS VARIABLES & RESET --- */
-  :root {
-    /* PEARSON BRAND COLORS */
-    --pearson-blue: #007FA3;
-    --pearson-dark: #003057;
-    
-    /* UI COLORS */
-    --bg-body: #F4F5F7;
-    --card-white: #ffffff;
-    --text-dark: #212121;
-    --text-muted: #6b778c;
-    --accent-light: #F0F2F5;
-  }
+<div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 400px; margin: 0 auto; background-color: #F4F5F7; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #e0e0e0;">
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
-
-  /* WIDGET CONTAINER */
-  .sb-widget-container {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: var(--bg-body);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-
-  /* HEADER */
-  .widget-header {
-    background-color: var(--pearson-dark); /* Pearson Dark Navy */
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    font-size: 16px;
-  }
-  .header-icon svg { fill: white; width: 20px; height: 20px; opacity: 0.8; }
-
-  /* SCROLLABLE CONTENT AREA */
-  .widget-body {
-    padding: 20px;
-    max-height: 550px;
-    overflow-y: auto;
-  }
-
-  /* SECTION TITLE */
-  .section-heading {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--pearson-dark);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-heading svg { fill: var(--pearson-blue); width: 16px; height: 16px; }
-
-  /* === HERO CARD (NEXT SHIFT) === */
-  .hero-card {
-    /* Pearson Gradient */
-    background: linear-gradient(135deg, var(--pearson-blue) 0%, var(--pearson-dark) 100%);
-    color: white;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 48, 87, 0.25);
-  }
-
-  /* Subtle background pattern for visual interest */
-  .hero-card::after {
-    content: 'PROCTOR EXAM SCHEDULE';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-20deg);
-    font-size: 40px;
-    font-weight: 900;
-    white-space: nowrap;
-    opacity: 0.04;
-    pointer-events: none;
-  }
-
-  .hero-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .hero-label { font-size: 14px; opacity: 0.9; }
-  .status-badge {
-    background: rgba(255,255,255,0.15);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-location {
-    display: flex; align-items: center; gap: 6px; font-size: 13px; opacity: 0.9; margin-bottom: 16px;
-  }
-  .hero-location svg { fill: white; width: 14px; height: 14px; }
-
-  .hero-role {
-    font-size: 32px; font-weight: 800; margin-bottom: 20px; line-height: 1.1;
-  }
-
-  /* DATETIME GRID */
-  .dt-grid {
-    display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px; margin-bottom: 24px;
-  }
-  .dt-box {
-    background: rgba(0,0,0,0.2);
-    padding: 12px; border-radius: 8px; text-align: center;
-    backdrop-filter: blur(5px);
-  }
-  .dt-label { font-size: 11px; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
-  .dt-value { font-size: 15px; font-weight: 700; }
-
-  /* BUTTONS */
-  .btn-group { display: flex; gap: 12px; }
-  .btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: 24px;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    border: none;
-    display: flex; justify-content: center; align-items: center; gap: 8px;
-    transition: all 0.2s ease;
-  }
-  .btn-outline {
-    background: transparent; border: 1px solid rgba(255,255,255,0.6); color: white;
-  }
-  .btn-outline:hover { background: rgba(255,255,255,0.1); }
-  
-  .btn-primary {
-    background: white; color: var(--pearson-dark);
-  }
-  .btn-primary:hover { background: #f0f0f0; }
-  .btn-primary svg { fill: var(--pearson-dark); width: 16px; height: 16px; }
-
-
-  /* === UPCOMING LIST === */
-  .list-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
-  }
-  .see-all-link {
-    color: var(--pearson-blue); font-size: 11px; font-weight: 700; text-decoration: none; text-transform: uppercase;
-  }
-
-  .schedule-item {
-    background: var(--card-white);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex; align-items: flex-start; gap: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    /* Pearson Blue Accent stripe */
-    border-left: 4px solid var(--pearson-blue);
-  }
-
-  .cal-date {
-    background: var(--accent-light);
-    padding: 10px 14px; border-radius: 8px; text-align: center; min-width: 60px;
-  }
-  .cal-day { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-  .cal-num { font-size: 22px; font-weight: 800; color: var(--text-dark); line-height: 1.2; }
-
-  .item-details { flex: 1; }
-  .item-role { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-  .item-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .item-loc {
-    font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;
-  }
-  .item-loc svg { fill: var(--text-muted); width: 12px; height: 12px; }
-  .item-hrs { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-  .item-time { font-size: 13px; font-weight: 600; color: var(--pearson-dark); }
-
-</style>
-</head>
-<body>
-
-<div class="sb-widget-container">
-  
-  div class="widget-header">
+  <div style="background-color: #003057; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
     <span>My Schedule</span>
-    <div class="header-icon">
-      <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
-    </div>
+    <svg style="fill: white; width: 20px; height: 20px; opacity: 0.9;" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
   </div>
 
-  <div class="widget-body">
-    
-    <div class="section-heading">
-      <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-      Next Shift Status
+  <div style="padding: 20px;">
+
+    <div style="font-size: 13px; font-weight: 800; color: #003057; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+      <svg style="fill: #007FA3; width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+      NEXT SHIFT STATUS
     </div>
 
-    <div class="hero-card">
-      <div class="hero-top">
-        <span class="hero-label">Your next assignment</span>
-        <span class="status-badge">Confirmed</span>
-      </div>
+    <div style="background-color: #007FA3; background: linear-gradient(135deg, #007FA3 0%, #003057 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 8px 20px rgba(0, 48, 87, 0.25); position: relative; overflow: hidden;">
       
-      <div class="hero-location">
-        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        Pearson VUE Center - Dallas #402
+      <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+        <span style="font-size: 14px; opacity: 0.9;">Your next assignment</span>
+        <span style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 12px; text-transform: uppercase;">Confirmed</span>
       </div>
 
-      <div class="hero-role">Lead Proctor</div>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; opacity: 0.9; margin-bottom: 16px;">
+        <svg style="fill: white; width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span>Pearson VUE Center - Dallas #402</span>
+      </div>
 
-      <div class="dt-grid">
-        <div class="dt-box">
-          <div class="dt-label">Date</div>
-          <div class="dt-value">Tomorrow</div>
+      <div style="font-size: 32px; font-weight: 800; margin-bottom: 20px; line-height: 1.1;">Lead Proctor</div>
+
+      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <div style="flex: 1; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; text-align: center;">
+          <div style="font-size: 11px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px;">Date</div>
+          <div style="font-size: 15px; font-weight: 700;">Tomorrow</div>
         </div>
-        <div class="dt-box">
-          <div class="dt-label">Time</div>
-          <div class="dt-value">07:30 AM - 3:30 PM</div>
+        <div style="flex: 1.5; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; text-align: center;">
+          <div style="font-size: 11px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px;">Time</div>
+          <div style="font-size: 15px; font-weight: 700;">07:30 AM - 3:30 PM</div>
         </div>
       </div>
 
-      <div class="btn-group">
-        <button class="btn btn-outline" onclick="alert('Redirect to PTO Request system')">Request PTO</button>
-        <button class="btn btn-primary" onclick="alert('Redirect to Shift Swap system')">
-          <svg viewBox="0 0 24 24"><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg>
-          Request Change
+      <div style="display: flex; gap: 12px;">
+        <button onclick="alert('PTO Requested')" style="flex: 1; padding: 12px; border-radius: 24px; font-weight: 700; font-size: 13px; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.6); color: white;">Request PTO</button>
+        
+        <button onclick="alert('Change Requested')" style="flex: 1; padding: 12px; border-radius: 24px; font-weight: 700; font-size: 13px; cursor: pointer; border: none; background: white; color: #003057; display: flex; align-items: center; justify-content: center; gap: 6px;">
+           <svg style="width:16px; height:16px; fill:#003057;" viewBox="0 0 24 24"><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg>
+           Request Change
         </button>
       </div>
     </div>
 
-    <div class="list-header">
-      <div class="section-heading" style="margin:0">Upcoming Schedule</div>
-      <a href="#" class="see-all-link">Full Calendar</a>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div style="font-size: 13px; font-weight: 800; color: #003057; text-transform: uppercase;">UPCOMING SCHEDULE</div>
+      <a href="#" style="color: #007FA3; font-size: 11px; font-weight: 700; text-decoration: none; text-transform: uppercase;">Full Calendar</a>
     </div>
 
-    <div class="schedule-item">
-      <div class="cal-date">
-        <div class="cal-day">Wed</div>
-        <div class="cal-num">23</div>
+    <div style="background: white; border-radius: 12px; padding: 16px; display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid #007FA3;">
+      <div style="background: #F0F2F5; padding: 10px 14px; border-radius: 8px; text-align: center; min-width: 60px;">
+        <div style="font-size: 11px; font-weight: 700; color: #6b778c; text-transform: uppercase;">Wed</div>
+        <div style="font-size: 22px; font-weight: 800; color: #212121; line-height: 1.2;">23</div>
       </div>
-      <div class="item-details">
-        <div class="item-role">Proctor</div>
-        <div class="item-meta">
-          <div class="item-loc">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <div style="flex: 1;">
+        <div style="font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 4px;">Proctor</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <div style="font-size: 12px; color: #6b778c; display: flex; align-items: center; gap: 4px;">
+            <svg style="fill: #6b778c; width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             Dallas #402
           </div>
-          <div class="item-hrs">8 hrs</div>
+          <div style="font-size: 11px; color: #6b778c; font-weight: 600;">8 hrs</div>
         </div>
-        <div class="item-time">07:30 AM - 3:30 PM</div>
+        <div style="font-size: 13px; font-weight: 600; color: #003057;">07:30 AM - 3:30 PM</div>
       </div>
     </div>
 
-    <div class="schedule-item">
-      <div class="cal-date">
-        <div class="cal-day">Fri</div>
-        <div class="cal-num">25</div>
+    <div style="background: white; border-radius: 12px; padding: 16px; display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid #007FA3;">
+      <div style="background: #F0F2F5; padding: 10px 14px; border-radius: 8px; text-align: center; min-width: 60px;">
+        <div style="font-size: 11px; font-weight: 700; color: #6b778c; text-transform: uppercase;">Fri</div>
+        <div style="font-size: 22px; font-weight: 800; color: #212121; line-height: 1.2;">25</div>
       </div>
-      <div class="item-details">
-        <div class="item-role">Check-in Administrator</div>
-        <div class="item-meta">
-          <div class="item-loc">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <div style="flex: 1;">
+        <div style="font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 4px;">Admin</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <div style="font-size: 12px; color: #6b778c; display: flex; align-items: center; gap: 4px;">
+            <svg style="fill: #6b778c; width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             Fort Worth #291
           </div>
-          <div class="item-hrs">5 hrs</div>
+          <div style="font-size: 11px; color: #6b778c; font-weight: 600;">5 hrs</div>
         </div>
-        <div class="item-time">11:00 AM - 4:00 PM</div>
+        <div style="font-size: 13px; font-weight: 600; color: #003057;">11:00 AM - 4:00 PM</div>
       </div>
     </div>
 
   </div>
 </div>
-
-</body>
-</html>
